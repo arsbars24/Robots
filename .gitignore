@@ -1,4 +1,6 @@
-/.metadata
-/robots/.settings
-/robots/bin
-eclipse.bat
+target/
+config/
+.idea/
+*.iws
+*.iml
+*.ipr
