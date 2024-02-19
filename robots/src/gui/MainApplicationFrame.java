@@ -15,17 +15,20 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import log.Logger;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Что требуется сделать:
- * 1. Метод создания меню перегружен функционалом и трудно читается. 
- * Следует разделить его на серию более простых методов (или вообще выделить отдельный класс).
- *
+ * Главный фрейм приложения, представляющий основное окно GUI.
  */
 public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
-    
+
+    /**
+     * Конструктор класса MainApplicationFrame.
+     * Устанавливает размеры и расположение фрейма, добавляет панель рабочего стола,
+     * создает и добавляет окно лога и игровое окно, создает и устанавливает меню.
+     */
     public MainApplicationFrame() {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
@@ -48,7 +51,12 @@ public class MainApplicationFrame extends JFrame
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-    
+
+    /**
+     * Создает окно лога.
+     *
+     * @return Созданное окно лога.
+     */
     protected LogWindow createLogWindow()
     {
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
@@ -59,7 +67,12 @@ public class MainApplicationFrame extends JFrame
         Logger.debug("Протокол работает");
         return logWindow;
     }
-    
+
+    /**
+     * Добавляет внутреннее окно на панель рабочего стола.
+     *
+     * @param frame Внутреннее окно для добавления.
+     */
     protected void addWindow(JInternalFrame frame)
     {
         desktopPane.add(frame);
@@ -94,7 +107,13 @@ public class MainApplicationFrame extends JFrame
 // 
 //        return menuBar;
 //    }
-    
+
+    /**
+     * Генерирует и возвращает меню приложения.
+     *
+     * @return Сгенерированное меню приложения.
+     */
+    @NotNull
     private JMenuBar generateMenuBar()
     {
         JMenuBar menuBar = new JMenuBar();
@@ -105,7 +124,8 @@ public class MainApplicationFrame extends JFrame
                 "Управление режимом отображения приложения");
         
         {
-            JMenuItem systemLookAndFeel = new JMenuItem("Системная схема", KeyEvent.VK_S);
+            JMenuItem systemLookAndFeel = new JMenuItem(
+                    "Системная схема", KeyEvent.VK_S);
             systemLookAndFeel.addActionListener((event) -> {
                 setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 this.invalidate();
@@ -114,7 +134,8 @@ public class MainApplicationFrame extends JFrame
         }
 
         {
-            JMenuItem crossplatformLookAndFeel = new JMenuItem("Универсальная схема", KeyEvent.VK_S);
+            JMenuItem crossplatformLookAndFeel = new JMenuItem(
+                    "Универсальная схема", KeyEvent.VK_S);
             crossplatformLookAndFeel.addActionListener((event) -> {
                 setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                 this.invalidate();
@@ -128,10 +149,10 @@ public class MainApplicationFrame extends JFrame
                 "Тестовые команды");
         
         {
-            JMenuItem addLogMessageItem = new JMenuItem("Сообщение в лог", KeyEvent.VK_S);
-            addLogMessageItem.addActionListener((event) -> {
-                Logger.debug("Новая строка");
-            });
+            JMenuItem addLogMessageItem = new JMenuItem(
+                    "Сообщение в лог", KeyEvent.VK_S);
+            addLogMessageItem.addActionListener((event) ->
+                    Logger.debug("Новая строка"));
             testMenu.add(addLogMessageItem);
         }
 
@@ -139,7 +160,12 @@ public class MainApplicationFrame extends JFrame
         menuBar.add(testMenu);
         return menuBar;
     }
-    
+
+    /**
+     * Устанавливает новый внешний вид приложения.
+     *
+     * @param className Имя класса нового внешнего вида.
+     */
     private void setLookAndFeel(String className)
     {
         try

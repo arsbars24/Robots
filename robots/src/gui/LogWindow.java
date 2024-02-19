@@ -11,11 +11,20 @@ import log.LogChangeListener;
 import log.LogEntry;
 import log.LogWindowSource;
 
+/**
+ * Окно протокола работы приложения.
+ */
 public class LogWindow extends JInternalFrame implements LogChangeListener
 {
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
 
+    /**
+     * Конструктор класса LogWindow.
+     * Создает окно протокола работы приложения.
+     *
+     * @param logSource Источник данных для протокола.
+     */
     public LogWindow(LogWindowSource logSource) 
     {
         super("Протокол работы", true, true, true, true);
@@ -31,6 +40,9 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
         updateLogContent();
     }
 
+    /**
+     * Обновляет содержимое протокола.
+     */
     private void updateLogContent()
     {
         StringBuilder content = new StringBuilder();
@@ -41,7 +53,14 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
         m_logContent.setText(content.toString());
         m_logContent.invalidate();
     }
-    
+
+    /**
+     * Вызывается при изменении протокола.
+     * Обновляет содержимое протокола работы приложения на графическом интерфейсе.
+     * Данный метод вызывается асинхронно на главном потоке событий (EDT) с помощью
+     * метода {@link java.awt.EventQueue#invokeLater(Runnable)}, чтобы обеспечить безопасность
+     * работы с графическим интерфейсом Swing.
+     */
     @Override
     public void onLogChanged()
     {

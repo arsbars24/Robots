@@ -5,9 +5,17 @@ import java.awt.BorderLayout;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
+/**
+ * Окно игры внутри главного окна.
+ */
 public class GameWindow extends JInternalFrame
 {
     private final GameVisualizer m_visualizer;
+
+    /**
+     * Конструктор класса GameWindow.
+     * Создает окно игры с визуализатором игры.
+     */
     public GameWindow() 
     {
         super("Игровое поле", true, true, true, true);
