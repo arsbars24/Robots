@@ -15,7 +15,7 @@
     </properties>
 
     <dependencies>
-        <!-- Зависимости проекта, если есть -->
+
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
