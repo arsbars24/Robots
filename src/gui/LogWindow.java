@@ -58,7 +58,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
      * Вызывается при изменении протокола.
      * Обновляет содержимое протокола работы приложения на графическом интерфейсе.
      * Данный метод вызывается асинхронно на главном потоке событий (EDT) с помощью
-     * метода {@link java.awt.EventQueue#invokeLater(Runnable)}, чтобы обеспечить безопасность
+     * метода {@link EventQueue#invokeLater(Runnable)}, чтобы обеспечить безопасность
      * работы с графическим интерфейсом Swing.
      */
     @Override
