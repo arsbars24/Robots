@@ -74,8 +74,10 @@ public class MainApplicationFrame extends JFrame {
         frame.setVisible(true);
     }
 
-    //TODO javadoc
-    private void confirmExit() {
+    /**
+     * Метод для подтверждения выхода
+     */
+    protected void confirmExit() {
         Object[] choices = {bundle.getString("quit"), bundle.getString("cancel")};
         Object defaultChoice = choices[0];
         int confirmed = JOptionPane.showOptionDialog(null,

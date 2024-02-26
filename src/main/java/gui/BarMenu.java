@@ -3,23 +3,16 @@ package gui;
 import log.Logger;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 /**
  * Панель меню приложения, содержащая различные команды и настройки.
  */
 public class BarMenu {
     MainApplicationFrame mainFrame;
-    private final ResourceBundle bundle = ResourceBundle
-            .getBundle("resources/messages",
-                    new Locale("ru", "RU"));
 
     /**
      * Конструктор класса BarMenu.
@@ -105,7 +98,7 @@ public class BarMenu {
      * @param key Клавиша для быстрого доступа.
      * @param textDescription Описание меню.
      * @param item Элемент меню.
-     * @return Меню.
+     * @return Строку меню
      */
     private JMenu createMenu(String text, int key, String textDescription, JMenuItem item) {
         JMenu menu = new JMenu(text);
@@ -121,7 +114,7 @@ public class BarMenu {
      * @param key Клавиша для быстрого доступа.
      * @param textDescription Описание меню.
      * @param items Элементы меню.
-     * @return Меню.
+     * @return Строку меню
      */
     private JMenu createMenu(String text, int key, String textDescription, List<JMenuItem> items) {
         JMenu menu = createMenu(text, key, textDescription, items.get(0));
@@ -131,33 +124,15 @@ public class BarMenu {
         return menu;
     }
 
-    // Метод создания меню для выхода из приложения
-    //TODO javadoc
+    /**
+     * Метод создания меню выхода из приложения
+     * @return Меню выхода
+     */
     private JMenu createExitMenu() {
-        JMenuItem exitMenuItem = createItem("Выход", KeyEvent.VK_X, (event) -> confirmExit());
-        return createMenu("Выход", KeyEvent.VK_X, "Закрыть приложение", exitMenuItem);
+        JMenuItem exitMenuItem = createItem("Выход", KeyEvent.VK_X,
+                (event) -> mainFrame.confirmExit());
+        return createMenu("Выход", KeyEvent.VK_X,
+                "Закрыть приложение", exitMenuItem);
     }
-
-    // Метод для подтверждения выхода с запросом на русском языке
-    //TODO javadoc
-    private void confirmExit() {
-        Object[] choices = {bundle.getString("quit"), bundle.getString("cancel")};
-        Object defaultChoice = choices[0];
-        int confirmed = JOptionPane.showOptionDialog(null,
-                bundle.getString("quitQuestion"),
-                bundle.getString("quitTitle"),
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                choices,
-                defaultChoice);
-
-        if (confirmed == JOptionPane.YES_OPTION) {
-            //WindowEvent closeEvent = new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING);
-            //Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closeEvent);
-            System.exit(0);
-        }
-    }
-
 
 }
