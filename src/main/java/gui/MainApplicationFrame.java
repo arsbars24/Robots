@@ -90,8 +90,7 @@ public class MainApplicationFrame extends JFrame {
                 defaultChoice);
 
         if (confirmed == JOptionPane.YES_OPTION) {
-            //dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-            System.exit(0);
+            dispose();
         }
     }
 }
