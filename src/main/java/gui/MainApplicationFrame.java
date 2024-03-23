@@ -5,6 +5,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
 import log.Logger;
+import state.StateManager;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -12,11 +13,14 @@ import java.util.ResourceBundle;
 /**
  * Главное окно приложения, содержащее в себе рабочую область и панель меню.
  */
-public class MainApplicationFrame extends JFrame {
+public class MainApplicationFrame extends JFrame{
     private final JDesktopPane desktopPane = new JDesktopPane();
+    private LogWindow logWindow; // Объявляем переменную logWindow
+    private GameWindow gameWindow; // Объявляем переменную gameWindow
+    private final StateManager stateManager; // Оставляем только объявление
 
     private final ResourceBundle bundle = ResourceBundle
-            .getBundle("resources/messages",
+            .getBundle("messages",
                     new Locale("ru", "RU"));
 
     /**
@@ -33,12 +37,14 @@ public class MainApplicationFrame extends JFrame {
 
         setContentPane(desktopPane);
 
-        LogWindow logWindow = createLogWindow();
+        logWindow = createLogWindow(); // Создаем logWindow
         addWindow(logWindow);
 
-        GameWindow gameWindow = new GameWindow();
+        gameWindow = new GameWindow(); // Создаем gameWindow
         gameWindow.setSize(400, 400);
         addWindow(gameWindow);
+
+        stateManager = new StateManager(this, logWindow, gameWindow); // Инициализируем stateManager
 
         BarMenu barMenu = new BarMenu(this);
         setJMenuBar(barMenu.generateMenuBar());
@@ -49,6 +55,7 @@ public class MainApplicationFrame extends JFrame {
                 confirmExit();
             }
         });
+        stateManager.restoreState();
     }
 
     /**
@@ -91,6 +98,7 @@ public class MainApplicationFrame extends JFrame {
 
         if (confirmed == JOptionPane.YES_OPTION) {
             dispose();
+            stateManager.saveState();
         }
     }
 }
