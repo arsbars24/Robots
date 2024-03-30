@@ -15,9 +15,9 @@ import java.util.ResourceBundle;
  */
 public class MainApplicationFrame extends JFrame{
     private final JDesktopPane desktopPane = new JDesktopPane();
-    private LogWindow logWindow; // Объявляем переменную logWindow
-    private GameWindow gameWindow; // Объявляем переменную gameWindow
-    private final StateManager stateManager; // Оставляем только объявление
+    private LogWindow logWindow;
+    private GameWindow gameWindow;
+    private final StateManager stateManager;
 
     private final ResourceBundle bundle = ResourceBundle
             .getBundle("messages",
@@ -44,7 +44,7 @@ public class MainApplicationFrame extends JFrame{
         gameWindow.setSize(400, 400);
         addWindow(gameWindow);
 
-        stateManager = new StateManager(this, logWindow, gameWindow); // Инициализируем stateManager
+        stateManager = new StateManager(this, logWindow, gameWindow);
 
         BarMenu barMenu = new BarMenu(this);
         setJMenuBar(barMenu.generateMenuBar());
