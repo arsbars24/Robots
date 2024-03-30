@@ -1,9 +1,7 @@
 package state;
 
-import java.util.Map;
-
 /**
- * Интерфейс для работы с состоянием
+ * Интерфейс WindowState определяет методы для сохранения и восстановления состояния окна.
  */
 public interface WindowState {
     void saveState();

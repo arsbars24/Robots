@@ -5,17 +5,33 @@ import gui.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Класс StateManager отвечает за управление состоянием различных окон в приложении.
+ * Он реализует интерфейс WindowState для предоставления методов сохранения и
+ * восстановления состояний окон.
+ */
+
 public class StateManager implements WindowState {
     private final MainApplicationFrame mainFrame;
     private final LogWindow logWindow;
     private final GameWindow gameWindow;
 
+    /**
+     * Создает объект StateManager с указанным главным фреймом, окном журнала и окном игры.
+     *
+     * @param mainFrame  главный фрейм приложения
+     * @param logWindow  окно журнала
+     * @param gameWindow окно игры
+     */
     public StateManager(MainApplicationFrame mainFrame, LogWindow logWindow, GameWindow gameWindow){
         this.mainFrame = mainFrame;
         this.logWindow = logWindow;
         this.gameWindow = gameWindow;
     }
 
+    /**
+     * Сохраняет состояние главного фрейма, окна журнала и окна игры в файл.
+     */
     @Override
     public void saveState() {
         Map<String, String> state = new HashMap<>();
@@ -45,6 +61,9 @@ public class StateManager implements WindowState {
         }
     }
 
+    /**
+     * Восстанавливает состояние главного фрейма, окна журнала и окна игры из файла.
+     */
     @Override
     public void restoreState() {
         String configFilePath = System.getProperty("user.home") + File.separator + "state.dat";
