@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
+
+import game.RobotCoordinatesWindow;
+import game.RobotModel;
 import log.Logger;
 import state.StateManager;
 
@@ -17,7 +20,9 @@ public class MainApplicationFrame extends JFrame{
     private final JDesktopPane desktopPane = new JDesktopPane();
     private LogWindow logWindow;
     private GameWindow gameWindow;
+    private RobotCoordinatesWindow robotCoordinatesWindow;
     private final StateManager stateManager;
+    private final RobotModel robotModel;
 
     private final ResourceBundle bundle = ResourceBundle
             .getBundle("messages",
@@ -43,6 +48,10 @@ public class MainApplicationFrame extends JFrame{
         gameWindow = new GameWindow(); // Создаем gameWindow
         gameWindow.setSize(400, 400);
         addWindow(gameWindow);
+
+        robotModel = new RobotModel(100, 100);
+        robotCoordinatesWindow = new RobotCoordinatesWindow(robotModel);
+        addWindow(robotCoordinatesWindow);
 
         stateManager = new StateManager(this, logWindow, gameWindow);
 
@@ -98,6 +107,7 @@ public class MainApplicationFrame extends JFrame{
 
         if (confirmed == JOptionPane.YES_OPTION) {
             dispose();
+            System.exit(1);
             stateManager.saveState();
         }
     }

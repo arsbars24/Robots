@@ -1,5 +1,6 @@
 package state;
 
+import gui.GameWindow;
 import gui.*;
 
 import java.io.*;
