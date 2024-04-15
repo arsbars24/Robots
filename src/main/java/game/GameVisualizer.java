@@ -28,47 +28,34 @@ public class GameVisualizer extends JPanel implements Observer {
     }
 
     protected void setTargetPosition(Point p) {
-        robotModel.setTargetPosition(round(p.getX()), round(p.getY()));
+        robotModel.setTargetPosition((int) Math.round(p.getX()),(int) Math.round(p.getY()));
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        drawRobot(g2d, round(robotModel.getPositionX()), round(robotModel.getPositionY()), robotModel.getDirection());
-        drawTarget(g2d, robotModel.getTargetPositionX(), robotModel.getTargetPositionY());
+        drawRobot(g2d,
+                (int) Math.round(robotModel.getPositionX()),
+                (int) Math.round(robotModel.getPositionY()),
+                robotModel.getDirection());
+        drawTarget(g2d,
+                robotModel.getTargetPositionX(),
+                robotModel.getTargetPositionY());
     }
 
     protected void moveRobot() {
-        // Создаем новый поток для выполнения движения робота
         Thread moveThread = new Thread(() -> {
-            double velocity = 1.0; // Пример значения скорости
-            double angularVelocity = 0.1; // Пример значения угловой скорости
-            double duration = 1.0; // Фиксированная длительность движения
-
-            // Пока робот не достигнет цели, продолжаем движение
-            while (!isAtTarget()) {
-                robotModel.moveRobot(velocity, angularVelocity, duration);
-                // Ждем некоторое время перед следующим шагом (не обязательно)
+            while (!robotModel.isAtTarget()) {
+                robotModel.moveRobot();
                 try {
-                    Thread.sleep(100); // 100 миллисекунд
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         });
-
-        // Запускаем поток
         moveThread.start();
-    }
-
-    // Метод для проверки достижения цели
-    private boolean isAtTarget() {
-        int t_x = robotModel.getTargetPositionX();
-        int t_y = robotModel.getTargetPositionY();
-        int r_x = round(robotModel.getPositionX());
-        int r_y = round(robotModel.getPositionY());
-        return t_x == r_x && t_y == r_y;
     }
 
     @Override
@@ -85,8 +72,8 @@ public class GameVisualizer extends JPanel implements Observer {
     }
 
     private void drawRobot(Graphics2D g, int x, int y, double direction) {
-        int robotCenterX = round(robotModel.getPositionX());
-        int robotCenterY = round(robotModel.getPositionY());
+        int robotCenterX = (int) Math.round(robotModel.getPositionX());
+        int robotCenterY = (int) Math.round(robotModel.getPositionY());
         AffineTransform t = AffineTransform.getRotateInstance(direction, robotCenterX, robotCenterY);
         g.setTransform(t);
         g.setColor(Color.MAGENTA);
@@ -106,9 +93,5 @@ public class GameVisualizer extends JPanel implements Observer {
         fillOval(g, x, y, 5, 5);
         g.setColor(Color.BLACK);
         drawOval(g, x, y, 5, 5);
-    }
-
-    private static int round(double value) {
-        return (int) (value + 0.5);
     }
 }
