@@ -2,6 +2,7 @@ package game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,7 +17,7 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Observer {
         this.robotModel = robotModel;
         robotModel.addObserver(this);
 
-        setTitle("Robot Coordinates");
+        setTitle("Координаты робота");
         setSize(200, 100);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -27,14 +28,14 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Observer {
         setLocation(800, 0);
         setVisible(true);
     }
-    //FIXME исправить окно (не отображает координаты)
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof RobotModel) {
             RobotModel model = (RobotModel) o;
-            double x = model.getPositionX();
-            double y = model.getPositionY();
-            coordinatesLabel.setText("X: " + x + ", Y: " + y);
+            DecimalFormat decimalFormat = new DecimalFormat("#.###");
+            String x = decimalFormat.format(model.getPositionX());
+            String y = decimalFormat.format(model.getPositionY());
+            coordinatesLabel.setText("X: " + x  + ",  Y: " + y);
         }
     }
     //TODO добавить в statemanger это окно

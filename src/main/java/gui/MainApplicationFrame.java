@@ -45,11 +45,12 @@ public class MainApplicationFrame extends JFrame{
         logWindow = createLogWindow(); // Создаем logWindow
         addWindow(logWindow);
 
-        gameWindow = new GameWindow(); // Создаем gameWindow
+        robotModel = new RobotModel(100, 100);
+
+        gameWindow = new GameWindow(robotModel); // Создаем gameWindow
         gameWindow.setSize(400, 400);
         addWindow(gameWindow);
 
-        robotModel = new RobotModel(100, 100);
         robotCoordinatesWindow = new RobotCoordinatesWindow(robotModel);
         addWindow(robotCoordinatesWindow);
 
