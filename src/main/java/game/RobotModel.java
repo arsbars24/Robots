@@ -17,27 +17,59 @@ public class RobotModel extends Observable {
     private static final double maxVelocity = 0.4;
     private static final double maxAngularVelocity = 0.01;
 
+    /**
+     * Конструктор класса RobotModel.
+     * Инициализирует начальные координаты робота.
+     *
+     * @param initialPositionX Начальная координата X робота.
+     * @param initialPositionY Начальная координата Y робота.
+     */
     public RobotModel(double initialPositionX, double initialPositionY) {
         this.positionX = initialPositionX;
         this.positionY = initialPositionY;
     }
 
+    /**
+     * Получает текущую координату X робота.
+     *
+     * @return Текущая координата X робота.
+     */
     public double getPositionX() {
         return positionX;
     }
 
+    /**
+     * Получает текущую координату Y робота.
+     *
+     * @return Текущая координата Y робота.
+     */
     public double getPositionY() {
         return positionY;
     }
 
+    /**
+     * Получает текущее направление робота.
+     *
+     * @return Текущее направление робота.
+     */
     public double getDirection() {
         return direction;
     }
 
+    /**
+     * Получает координату X цели.
+     *
+     * @return Координата X цели.
+     */
     public int getTargetPositionX() {
         return targetPositionX;
     }
 
+    /**
+     * Получает координату Y цели.
+     *
+     * @return Координата Y цели.
+     */
     public int getTargetPositionY() {
         return targetPositionY;
     }
@@ -70,7 +102,7 @@ public class RobotModel extends Observable {
     }
 
     /**
-     * Перемещает робота.
+     * Перемещает робота к цели.
      */
     public void moveRobot() {
         // Рассчитываем расстояние до цели
@@ -114,9 +146,11 @@ public class RobotModel extends Observable {
         updatePosition(newX, newY, newDirection);
     }
 
-
     /**
      * Приводит угол к нормализованному виду в радианах.
+     *
+     * @param angle Угол в радианах.
+     * @return Нормализованный угол в радианах.
      */
     private static double asNormalizedRadians(double angle) {
         while (angle < 0) {
@@ -128,11 +162,25 @@ public class RobotModel extends Observable {
         return angle;
     }
 
+    /**
+     * Проверяет, достиг ли робот цели.
+     *
+     * @return true, если робот достиг цели, в противном случае - false.
+     */
     protected boolean isAtTarget() {
         return Math.round(positionX) == targetPositionX
                 && Math.round(positionY) == targetPositionY;
     }
 
+    /**
+     * Рассчитывает евклидово расстояние между двумя точками.
+     *
+     * @param x1 Координата X первой точки.
+     * @param y1 Координата Y первой точки.
+     * @param x2 Координата X второй точки.
+     * @param y2 Координата Y второй точки.
+     * @return Евклидово расстояние между двумя точками.
+     */
     private static double distance(double x1, double y1, double x2, double y2)
     {
         double diffX = x1 - x2;
@@ -142,6 +190,12 @@ public class RobotModel extends Observable {
 
     /**
      * Рассчитывает угол между двумя точками.
+     *
+     * @param fromX Координата X начальной точки.
+     * @param fromY Координата Y начальной точки.
+     * @param toX   Координата X конечной точки.
+     * @param toY   Координата Y конечной точки.
+     * @return Угол между двумя точками в радианах.
      */
     private static double angleTo(double fromX, double fromY, double toX, double toY)
     {
@@ -150,6 +204,15 @@ public class RobotModel extends Observable {
 
         return asNormalizedRadians(Math.atan2(diffY, diffX));
     }
+
+    /**
+     * Применяет ограничения к значению.
+     *
+     * @param value Значение.
+     * @param min   Минимальное значение.
+     * @param max   Максимальное значение.
+     * @return Значение, ограниченное указанными границами.
+     */
     private static double applyLimits(double value, double min, double max) {
         if (value < min)
             return min;

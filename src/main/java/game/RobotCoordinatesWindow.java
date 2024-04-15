@@ -13,6 +13,12 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Observer {
     private JLabel coordinatesLabel;
     private final RobotModel robotModel;
 
+    /**
+     * Конструктор класса RobotCoordinatesWindow.
+     * Создает окно для отображения текущих координат робота.
+     *
+     * @param robotModel Модель робота, которую необходимо отслеживать.
+     */
     public RobotCoordinatesWindow(RobotModel robotModel) {
         this.robotModel = robotModel;
         robotModel.addObserver(this);
@@ -28,6 +34,13 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Observer {
         setLocation(800, 0);
         setVisible(true);
     }
+
+    /**
+     * Обновляет отображаемые координаты робота при изменении состояния модели.
+     *
+     * @param o   Наблюдаемый объект.
+     * @param arg Аргументы изменения состояния (не используется).
+     */
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof RobotModel) {
@@ -38,5 +51,4 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Observer {
             coordinatesLabel.setText("X: " + x  + ",  Y: " + y);
         }
     }
-    //TODO добавить в statemanger это окно
 }
