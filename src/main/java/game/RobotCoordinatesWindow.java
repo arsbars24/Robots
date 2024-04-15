@@ -10,8 +10,7 @@ import java.util.Observer;
  * Окно для отображения текущих координат робота.
  */
 public class RobotCoordinatesWindow extends JInternalFrame implements Observer {
-    private JLabel coordinatesLabel;
-    private final RobotModel robotModel;
+    private final JLabel coordinatesLabel;
 
     /**
      * Конструктор класса RobotCoordinatesWindow.
@@ -20,7 +19,6 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Observer {
      * @param robotModel Модель робота, которую необходимо отслеживать.
      */
     public RobotCoordinatesWindow(RobotModel robotModel) {
-        this.robotModel = robotModel;
         robotModel.addObserver(this);
 
         setTitle("Координаты робота");
@@ -43,8 +41,7 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof RobotModel) {
-            RobotModel model = (RobotModel) o;
+        if (o instanceof RobotModel model) {
             DecimalFormat decimalFormat = new DecimalFormat("#.###");
             String x = decimalFormat.format(model.getPositionX());
             String y = decimalFormat.format(model.getPositionY());
