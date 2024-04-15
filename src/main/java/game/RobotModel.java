@@ -11,9 +11,6 @@ public class RobotModel extends Observable {
     private double direction;
     private int targetPositionX;
     private int targetPositionY;
-    private double velocity = 0.1; // Пример значения скорости
-    private double angularVelocity = 0.001; // Пример значения угловой скорости
-    private double duration = 1.0; // Фиксированная длительность движения
     private static final double maxVelocity = 0.4;
     private static final double maxAngularVelocity = 0.01;
 
@@ -106,23 +103,22 @@ public class RobotModel extends Observable {
      */
     public void moveRobot() {
         // Рассчитываем расстояние до цели
-        double distance = distance(targetPositionX, targetPositionY, positionX, positionY);
-
-        // Если робот уже достиг цели, прекращаем движение
-        if (distance < 0.5) {
-            return;
-        }
+        double distance =
+                distance(targetPositionX, targetPositionY, positionX, positionY);
 
         // Рассчитываем угол поворота к цели
-        double angleToTarget = angleTo(positionX, positionY, targetPositionX, targetPositionY);
+        double angleToTarget =
+                angleTo(positionX, positionY, targetPositionX, targetPositionY);
         double angleDifference = angleToTarget - direction;
 
         // Определяем направление поворота
         double angularVelocity = 0;
         if (angleDifference > Math.PI) {
-            angleDifference -= 2 * Math.PI; // Если разница больше 180 градусов, то берем противоположное направление
+            angleDifference -= 2 * Math.PI;
+            // Если разница больше 180 градусов, то берем противоположное направление
         } else if (angleDifference < -Math.PI) {
-            angleDifference += 2 * Math.PI; // Если разница меньше -180 градусов, то берем противоположное направление
+            angleDifference += 2 * Math.PI;
+            // Если разница меньше -180 градусов, то берем противоположное направление
         }
 
         // Определяем направление поворота
@@ -141,7 +137,8 @@ public class RobotModel extends Observable {
         // Обновляем позицию и направление робота
         double newX = positionX + velocity * Math.cos(direction) * duration;
         double newY = positionY + velocity * Math.sin(direction) * duration;
-        double newDirection = asNormalizedRadians(direction + angularVelocity * duration);
+        double newDirection =
+                asNormalizedRadians(direction + angularVelocity * duration);
 
         updatePosition(newX, newY, newDirection);
     }
@@ -203,21 +200,5 @@ public class RobotModel extends Observable {
         double diffY = toY - fromY;
 
         return asNormalizedRadians(Math.atan2(diffY, diffX));
-    }
-
-    /**
-     * Применяет ограничения к значению.
-     *
-     * @param value Значение.
-     * @param min   Минимальное значение.
-     * @param max   Максимальное значение.
-     * @return Значение, ограниченное указанными границами.
-     */
-    private static double applyLimits(double value, double min, double max) {
-        if (value < min)
-            return min;
-        if (value > max)
-            return max;
-        return value;
     }
 }
