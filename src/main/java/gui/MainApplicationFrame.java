@@ -5,7 +5,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
 
-import game.RobotCoordinatesWindow;
 import game.RobotModel;
 import log.Logger;
 import state.StateManager;
@@ -54,7 +53,11 @@ public class MainApplicationFrame extends JFrame{
         robotCoordinatesWindow = new RobotCoordinatesWindow(robotModel);
         addWindow(robotCoordinatesWindow);
 
-        stateManager = new StateManager(this, logWindow, gameWindow);
+        stateManager = new StateManager(
+                this,
+                logWindow,
+                gameWindow,
+                robotCoordinatesWindow);
 
         BarMenu barMenu = new BarMenu(this);
         setJMenuBar(barMenu.generateMenuBar());
@@ -107,9 +110,9 @@ public class MainApplicationFrame extends JFrame{
                 defaultChoice);
 
         if (confirmed == JOptionPane.YES_OPTION) {
+            stateManager.saveState();
             dispose();
             System.exit(1);
-            stateManager.saveState();
         }
     }
 }

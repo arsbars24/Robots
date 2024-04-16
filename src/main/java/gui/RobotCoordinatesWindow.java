@@ -1,4 +1,6 @@
-package game;
+package gui;
+
+import game.RobotModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,13 +24,13 @@ public class RobotCoordinatesWindow extends JInternalFrame implements Observer {
         robotModel.addObserver(this);
 
         setTitle("Координаты робота");
-        setSize(200, 100);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         coordinatesLabel = new JLabel();
         coordinatesLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(coordinatesLabel, BorderLayout.CENTER);
 
+        setSize(200, 100);
         setLocation(800, 0);
         setVisible(true);
     }

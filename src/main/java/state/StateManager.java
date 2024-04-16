@@ -3,6 +3,7 @@ package state;
 import gui.GameWindow;
 import gui.*;
 
+import java.beans.PropertyVetoException;
 import java.io.*;
 import java.util.*;
 
@@ -16,6 +17,7 @@ public class StateManager implements WindowState {
     private final MainApplicationFrame mainFrame;
     private final LogWindow logWindow;
     private final GameWindow gameWindow;
+    private final RobotCoordinatesWindow robotCoordinatesWindow;
 
     /**
      * Создает объект StateManager с указанным главным фреймом, окном журнала и окном игры.
@@ -23,11 +25,16 @@ public class StateManager implements WindowState {
      * @param mainFrame  главный фрейм приложения
      * @param logWindow  окно журнала
      * @param gameWindow окно игры
+     * @param robotCoordinatesWindow окно координат робота
      */
-    public StateManager(MainApplicationFrame mainFrame, LogWindow logWindow, GameWindow gameWindow){
+    public StateManager(MainApplicationFrame mainFrame,
+                        LogWindow logWindow,
+                        GameWindow gameWindow,
+                        RobotCoordinatesWindow robotCoordinatesWindow){
         this.mainFrame = mainFrame;
         this.logWindow = logWindow;
         this.gameWindow = gameWindow;
+        this.robotCoordinatesWindow = robotCoordinatesWindow;
     }
 
     /**
@@ -47,12 +54,22 @@ public class StateManager implements WindowState {
         state.put("logWindowY", Integer.toString(logWindow.getY()));
         state.put("logWindowWidth", Integer.toString(logWindow.getWidth()));
         state.put("logWindowHeight", Integer.toString(logWindow.getHeight()));
+        state.put("logWindowIsIcon", Boolean.toString(logWindow.isIcon()));
 
         // Сохранение состояния окна игры
         state.put("gameWindowX", Integer.toString(gameWindow.getX()));
         state.put("gameWindowY", Integer.toString(gameWindow.getY()));
         state.put("gameWindowWidth", Integer.toString(gameWindow.getWidth()));
         state.put("gameWindowHeight", Integer.toString(gameWindow.getHeight()));
+        state.put("gameWindowIsIcon", Boolean.toString(gameWindow.isIcon()));
+
+        // Сохранение состояния окна координат робота
+        state.put("robotCoordinatesWindowX", Integer.toString(robotCoordinatesWindow.getX()));
+        state.put("robotCoordinatesWindowY", Integer.toString(robotCoordinatesWindow.getY()));
+        state.put("robotCoordinatesWindowWidth", Integer.toString(robotCoordinatesWindow.getWidth()));
+        state.put("robotCoordinatesWindowHeight", Integer.toString(robotCoordinatesWindow.getHeight()));
+        state.put("robotCoordinatesWindowIsIcon", Boolean.toString(robotCoordinatesWindow.isIcon()));
+
 
         String configFilePath = System.getProperty("user.home") + File.separator + "state.dat";
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(configFilePath))) {
@@ -72,6 +89,7 @@ public class StateManager implements WindowState {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(configFilePath))) {
             state = (Map<String, String>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Config is not found");
             e.printStackTrace();
         }
         if (state != null) {
@@ -90,6 +108,11 @@ public class StateManager implements WindowState {
                     Integer.parseInt(state.get("logWindowWidth")),
                     Integer.parseInt(state.get("logWindowHeight"))
             );
+            try {
+                logWindow.setIcon(Boolean.parseBoolean(state.get("logWindowIsIcon")));
+            } catch (PropertyVetoException e) {
+                throw new RuntimeException(e);
+            }
 
             // Восстановление состояния окна игры
             gameWindow.setBounds(
@@ -98,6 +121,25 @@ public class StateManager implements WindowState {
                     Integer.parseInt(state.get("gameWindowWidth")),
                     Integer.parseInt(state.get("gameWindowHeight"))
             );
+            try {
+                gameWindow.setIcon(Boolean.parseBoolean(state.get("gameWindowIsIcon")));
+            } catch (PropertyVetoException e) {
+                throw new RuntimeException(e);
+            }
+
+
+            // Восстановление состояния окна координат робота
+            robotCoordinatesWindow.setBounds(
+                    Integer.parseInt(state.get("robotCoordinatesWindowX")),
+                    Integer.parseInt(state.get("robotCoordinatesWindowY")),
+                    Integer.parseInt(state.get("robotCoordinatesWindowWidth")),
+                    Integer.parseInt(state.get("robotCoordinatesWindowHeight"))
+            );
+            try {
+                robotCoordinatesWindow.setIcon(Boolean.parseBoolean(state.get("robotCoordinatesWindowIsIcon")));
+            } catch (PropertyVetoException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
