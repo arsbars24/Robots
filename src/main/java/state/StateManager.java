@@ -94,20 +94,26 @@ public class StateManager implements WindowState {
         }
         if (state != null) {
             // Восстановление состояния главного окна
-            mainFrame.setBounds(
-                    Integer.parseInt(state.get("mainFrameX")),
-                    Integer.parseInt(state.get("mainFrameY")),
-                    Integer.parseInt(state.get("mainFrameWidth")),
-                    Integer.parseInt(state.get("mainFrameHeight"))
-            );
+            if (state.containsKey("mainFrameX") && state.containsKey("mainFrameY") &&
+                    state.containsKey("mainFrameWidth") && state.containsKey("mainFrameHeight")) {
+                mainFrame.setBounds(
+                        Integer.parseInt(state.get("mainFrameX")),
+                        Integer.parseInt(state.get("mainFrameY")),
+                        Integer.parseInt(state.get("mainFrameWidth")),
+                        Integer.parseInt(state.get("mainFrameHeight"))
+                );
+            }
 
             // Восстановление состояния окна протокола
-            logWindow.setBounds(
-                    Integer.parseInt(state.get("logWindowX")),
-                    Integer.parseInt(state.get("logWindowY")),
-                    Integer.parseInt(state.get("logWindowWidth")),
-                    Integer.parseInt(state.get("logWindowHeight"))
-            );
+            if (state.containsKey("logWindowX") && state.containsKey("logWindowY") &&
+                    state.containsKey("logWindowWidth") && state.containsKey("logWindowHeight")) {
+                logWindow.setBounds(
+                        Integer.parseInt(state.get("logWindowX")),
+                        Integer.parseInt(state.get("logWindowY")),
+                        Integer.parseInt(state.get("logWindowWidth")),
+                        Integer.parseInt(state.get("logWindowHeight"))
+                );
+            }
             try {
                 logWindow.setIcon(Boolean.parseBoolean(state.get("logWindowIsIcon")));
             } catch (PropertyVetoException e) {
@@ -115,26 +121,31 @@ public class StateManager implements WindowState {
             }
 
             // Восстановление состояния окна игры
-            gameWindow.setBounds(
-                    Integer.parseInt(state.get("gameWindowX")),
-                    Integer.parseInt(state.get("gameWindowY")),
-                    Integer.parseInt(state.get("gameWindowWidth")),
-                    Integer.parseInt(state.get("gameWindowHeight"))
-            );
+            if (state.containsKey("gameWindowX") && state.containsKey("gameWindowY") &&
+                    state.containsKey("gameWindowWidth") && state.containsKey("gameWindowHeight")) {
+                gameWindow.setBounds(
+                        Integer.parseInt(state.get("gameWindowX")),
+                        Integer.parseInt(state.get("gameWindowY")),
+                        Integer.parseInt(state.get("gameWindowWidth")),
+                        Integer.parseInt(state.get("gameWindowHeight"))
+                );
+            }
             try {
                 gameWindow.setIcon(Boolean.parseBoolean(state.get("gameWindowIsIcon")));
             } catch (PropertyVetoException e) {
                 throw new RuntimeException(e);
             }
 
-
             // Восстановление состояния окна координат робота
-            robotCoordinatesWindow.setBounds(
-                    Integer.parseInt(state.get("robotCoordinatesWindowX")),
-                    Integer.parseInt(state.get("robotCoordinatesWindowY")),
-                    Integer.parseInt(state.get("robotCoordinatesWindowWidth")),
-                    Integer.parseInt(state.get("robotCoordinatesWindowHeight"))
-            );
+            if (state.containsKey("robotCoordinatesWindowX") && state.containsKey("robotCoordinatesWindowY") &&
+                    state.containsKey("robotCoordinatesWindowWidth") && state.containsKey("robotCoordinatesWindowHeight")) {
+                robotCoordinatesWindow.setBounds(
+                        Integer.parseInt(state.get("robotCoordinatesWindowX")),
+                        Integer.parseInt(state.get("robotCoordinatesWindowY")),
+                        Integer.parseInt(state.get("robotCoordinatesWindowWidth")),
+                        Integer.parseInt(state.get("robotCoordinatesWindowHeight"))
+                );
+            }
             try {
                 robotCoordinatesWindow.setIcon(Boolean.parseBoolean(state.get("robotCoordinatesWindowIsIcon")));
             } catch (PropertyVetoException e) {
