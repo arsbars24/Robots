@@ -1,28 +1,43 @@
 package log;
 
-public final class Logger
-{
+/**
+ * Класс Logger предоставляет методы удобства для протоколирования отладочных и ошибочных сообщений.
+ */
+public final class Logger {
+
     private static final LogWindowSource defaultLogSource;
+
     static {
-        defaultLogSource = new LogWindowSource(100);
-    }
-    
-    private Logger()
-    {
+        defaultLogSource = new LogWindowSource(100); // 100 - размер листа протоколирования
     }
 
-    public static void debug(String strMessage)
-    {
+    private Logger() {
+    }
+
+    /**
+     * Протоколирует отладочное сообщение.
+     *
+     * @param strMessage Отладочное сообщение для протоколирования.
+     */
+    public static void debug(String strMessage) {
         defaultLogSource.append(LogLevel.Debug, strMessage);
     }
-    
-    public static void error(String strMessage)
-    {
+
+    /**
+     * Протоколирует сообщение об ошибке.
+     *
+     * @param strMessage Сообщение об ошибке для протоколирования.
+     */
+    public static void error(String strMessage) {
         defaultLogSource.append(LogLevel.Error, strMessage);
     }
 
-    public static LogWindowSource getDefaultLogSource()
-    {
+    /**
+     * Получает источник протоколирования по умолчанию, используемый Logger.
+     *
+     * @return Экземпляр LogWindowSource по умолчанию.
+     */
+    public static LogWindowSource getDefaultLogSource() {
         return defaultLogSource;
     }
 }

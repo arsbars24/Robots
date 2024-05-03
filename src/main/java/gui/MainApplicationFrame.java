@@ -112,7 +112,7 @@ public class MainApplicationFrame extends JFrame{
         if (confirmed == JOptionPane.YES_OPTION) {
             stateManager.saveState();
             dispose();
-            System.exit(1);
+            System.exit(0);
         }
     }
 }
