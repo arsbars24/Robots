@@ -1,73 +1,88 @@
 package gui;
 
 import log.Logger;
+import locale.LocaleManager;
+import state.StateManager;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
- * Панель меню приложения, содержащая различные команды и настройки.
+ * Класс для создания меню приложения.
  */
 public class BarMenu {
     MainApplicationFrame mainFrame;
+    StateManager stateManager;
+    private final ResourceBundle resources;
 
     /**
      * Конструктор класса BarMenu.
-     * Создает панель меню приложения.
-     * @param mainFrame Главное окно приложения.
+     *
+     * @param mainFrame    Главное окно приложения.
+     * @param stateManager Менеджер состояний приложения.
      */
-    public BarMenu(MainApplicationFrame mainFrame) {
+    public BarMenu(MainApplicationFrame mainFrame, StateManager stateManager) {
         this.mainFrame = mainFrame;
+        this.stateManager = stateManager;
+        resources = LocaleManager.getCurrentResource(
+                LocaleManager.getCurrentLanguage()); // Получаем ресурсы для текущего языка
     }
 
     /**
-     * Генерирует панель меню.
-     * @return Панель меню приложения.
+     * Генерирует строку меню.
+     *
+     * @return Сгенерированное меню.
      */
     public JMenuBar generateMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(lookAndFeelMenu());
         menuBar.add(createTestMenu());
         menuBar.add(createExitMenu());
+        menuBar.add(createLocaleMenu());
         return menuBar;
     }
 
     /**
-     * Создает меню для выбора режима отображения.
-     * @return Меню выбора режима отображения.
+     * Создает меню внешнего вида.
+     *
+     * @return Меню внешнего вида.
      */
     private JMenu lookAndFeelMenu() {
-        return createMenu("Режим отображения",
+        return createMenu(resources.getString("look_and_feel_menu_title"),
                 KeyEvent.VK_V,
-                "Управление режимом отображения приложения",
+                resources.getString("look_and_feel_menu_description"),
                 Arrays.asList(
-                        createItem("Системная схема", KeyEvent.VK_S, (event) -> {
+                        createItem(resources.getString("system_look_and_feel_menu_item"), KeyEvent.VK_S, (event) -> {
                             setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                             mainFrame.invalidate();
                         }),
-                        createItem("Универсальная схема", KeyEvent.VK_S, (event) -> {
+                        createItem(resources.getString("cross_platform_look_and_feel_menu_item"), KeyEvent.VK_S, (event) -> {
                             setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                             mainFrame.invalidate();
                         })));
     }
 
     /**
-     * Создает тестовое меню.
-     * @return Тестовое меню.
+     * Создает меню тестов.
+     *
+     * @return Меню тестов.
      */
     private JMenu createTestMenu() {
-        return createMenu("Тесты",
+        return createMenu(resources.getString("test_menu_title"),
                 KeyEvent.VK_T,
-                "Тестовые команды",
-                createItem("Сообщение в лог", KeyEvent.VK_S, (event)
-                        -> Logger.debug("Новая строка")));
+                resources.getString("test_menu_description"),
+                createItem(resources.getString("log_message_menu_item"), KeyEvent.VK_S, (event)
+                        -> Logger.debug(resources.getString("log_message_text")))); // Используем локализованный текст
     }
 
     /**
-     * Устанавливает внешний вид приложения.
+     * Устанавливает внешний вид.
+     *
      * @param className Имя класса внешнего вида.
      */
     private void setLookAndFeel(String className) {
@@ -80,11 +95,12 @@ public class BarMenu {
     }
 
     /**
-     * Создает элемент меню.
-     * @param text Текст элемента меню.
-     * @param key Клавиша для быстрого доступа.
-     * @param actionListener Обработчик события элемента меню.
-     * @return Элемент меню.
+     * Создает пункт меню.
+     *
+     * @param text           Текст пункта меню.
+     * @param key            Клавиша быстрого доступа.
+     * @param actionListener Обработчик события.
+     * @return Пункт меню.
      */
     private JMenuItem createItem(String text, int key, ActionListener actionListener) {
         JMenuItem jMenuItem = new JMenuItem(text, key);
@@ -94,11 +110,12 @@ public class BarMenu {
 
     /**
      * Создает меню.
-     * @param text Текст меню.
-     * @param key Клавиша для быстрого доступа.
+     *
+     * @param text           Текст меню.
+     * @param key            Клавиша быстрого доступа.
      * @param textDescription Описание меню.
-     * @param item Элемент меню.
-     * @return Строку меню
+     * @param item           Пункт меню.
+     * @return Меню.
      */
     private JMenu createMenu(String text, int key, String textDescription, JMenuItem item) {
         JMenu menu = new JMenu(text);
@@ -108,13 +125,15 @@ public class BarMenu {
         menu.add(item);
         return menu;
     }
+
     /**
-     * Создает меню.
-     * @param text Текст меню.
-     * @param key Клавиша для быстрого доступа.
+     * Создает меню с несколькими пунктами.
+     *
+     * @param text           Текст меню.
+     * @param key            Клавиша быстрого доступа.
      * @param textDescription Описание меню.
-     * @param items Элементы меню.
-     * @return Строку меню
+     * @param items          Пункты меню.
+     * @return Меню.
      */
     private JMenu createMenu(String text, int key, String textDescription, List<JMenuItem> items) {
         JMenu menu = createMenu(text, key, textDescription, items.get(0));
@@ -125,14 +144,53 @@ public class BarMenu {
     }
 
     /**
-     * Метод создания меню выхода из приложения
-     * @return Меню выхода
+     * Создает меню выхода из приложения.
+     *
+     * @return Меню выхода из приложения.
      */
     private JMenu createExitMenu() {
-        JMenuItem exitMenuItem = createItem("Выход", KeyEvent.VK_X,
+        JMenuItem exitMenuItem = createItem(resources.getString("exit_menu_item"), KeyEvent.VK_X,
                 (event) -> mainFrame.confirmExit());
-        return createMenu("Выход", KeyEvent.VK_X,
-                "Закрыть приложение", exitMenuItem);
+        return createMenu(resources.getString("exit_menu_title"), KeyEvent.VK_X,
+                resources.getString("exit_menu_description"), exitMenuItem);
     }
 
+    /**
+     * Создает меню смены языка.
+     *
+     * @return Меню смены языка.
+     */
+    private JMenu createLocaleMenu() {
+        JMenu localeMenu = new JMenu(resources.getString("language_menu_title"));
+        localeMenu.setMnemonic(KeyEvent.VK_L);
+
+        JMenuItem russianMenuItem = createLanguageMenuItem(resources.getString("russian_menu_item"), LocaleManager.Language.RU);
+        JMenuItem englishMenuItem = createLanguageMenuItem(resources.getString("english_menu_item"), LocaleManager.Language.EN);
+
+        localeMenu.add(russianMenuItem);
+        localeMenu.add(englishMenuItem);
+
+        return localeMenu;
+    }
+
+    /**
+     * Создает пункт меню для смены языка.
+     *
+     * @param languageName Имя языка.
+     * @param language     Язык.
+     * @return Пункт меню для смены языка.
+     */
+    private JMenuItem createLanguageMenuItem(String languageName, LocaleManager.Language language) {
+        JMenuItem menuItem = new JMenuItem(languageName);
+        menuItem.addActionListener(e -> {
+            LocaleManager.setCurrentLanguage(language);
+            stateManager.saveState();
+            mainFrame.dispose();
+            SwingUtilities.invokeLater(() -> {
+                MainApplicationFrame frame = new MainApplicationFrame();
+                frame.setVisible(true);
+            });
+        });
+        return menuItem;
+    }
 }

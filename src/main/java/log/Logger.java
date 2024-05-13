@@ -1,14 +1,16 @@
 package log;
 
 /**
- * Класс Logger предоставляет методы удобства для протоколирования отладочных и ошибочных сообщений.
+ * Класс Logger предоставляет методы удобства для протоколирования отладочных и ошибочных
+ * сообщений.
  */
 public final class Logger {
 
     private static final LogWindowSource defaultLogSource;
 
     static {
-        defaultLogSource = new LogWindowSource(100); // 100 - размер листа протоколирования
+        defaultLogSource = new LogWindowSource(5);
+        // Устанавливаем количество отображаемых логов
     }
 
     private Logger() {

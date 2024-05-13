@@ -5,7 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Класс LogWindowSource представляет источник протоколирования, который хранит и управляет сообщениями лога.
+ * Класс LogWindowSource представляет источник протоколирования,
+ * который хранит и управляет сообщениями лога.
  */
 public class LogWindowSource {
     private final int m_iQueueLength;

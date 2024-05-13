@@ -4,34 +4,33 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
-
 import game.RobotModel;
 import log.Logger;
 import state.StateManager;
-
-import java.util.Locale;
 import java.util.ResourceBundle;
+import locale.LocaleManager;
 
 /**
  * Главное окно приложения, содержащее в себе рабочую область и панель меню.
  */
-public class MainApplicationFrame extends JFrame{
+public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
     private LogWindow logWindow;
     private GameWindow gameWindow;
     private RobotCoordinatesWindow robotCoordinatesWindow;
     private final StateManager stateManager;
     private final RobotModel robotModel;
-
-    private final ResourceBundle bundle = ResourceBundle
-            .getBundle("messages",
-                    new Locale("ru", "RU"));
+    private final LocaleManager localeManager;
+    private ResourceBundle bundle;
 
     /**
      * Конструктор класса MainApplicationFrame.
      * Создает экземпляр главного окна приложения.
      */
     public MainApplicationFrame() {
+        localeManager = new LocaleManager(); // Инициализируем LocaleManager
+        LocaleManager.setCurrentLanguage(LocaleManager.loadSetting());
+        bundle = LocaleManager.getCurrentResource(LocaleManager.getCurrentLanguage());
         int inset = 50;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(inset, inset,
@@ -59,7 +58,7 @@ public class MainApplicationFrame extends JFrame{
                 gameWindow,
                 robotCoordinatesWindow);
 
-        BarMenu barMenu = new BarMenu(this);
+        BarMenu barMenu = new BarMenu(this, stateManager); // Передаем localeManager в BarMenu
         setJMenuBar(barMenu.generateMenuBar());
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
